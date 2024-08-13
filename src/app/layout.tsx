@@ -3,6 +3,7 @@ import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { MobileNavigation } from "@/components/mobile-navigation";
 
 const font = Ubuntu({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
         >
           <main className="px-[10px] md:max-w-[1000px] md:mx-auto md:px-[20px]">
             <Navigation />
+            <MobileNavigation />
             {children}
           </main>
         </ThemeProvider>

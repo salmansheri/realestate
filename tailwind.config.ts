@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      flex: {
+        "2": "2 2 0%",
+        "3": "3 3 0%",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
