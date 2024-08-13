@@ -10,7 +10,7 @@ export const ListCard = ({ data }: { data: ListCardProps }) => {
     <div className="my-5 h-auto border rounded-lg shadow-xl overflow-hidden flex">
       <Link
         className="relative h-[15rem] w-[40%] overflow-hidden"
-        href={`/details/${data.id}`}
+        href={`/list/${data.id}`}
       >
         <Image
           alt={data.title}
