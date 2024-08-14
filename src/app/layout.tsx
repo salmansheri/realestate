@@ -29,7 +29,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="px-[10px] md:max-w-[1000px] md:mx-auto md:px-[20px]">
+          <main className="h-screen max-w-[1000px] mx-auto px-[20px] flex flex-col">
             <Navigation />
             <MobileNavigation />
             {children}

@@ -21,6 +21,7 @@ const config = {
       flex: {
         "2": "2 2 0%",
         "3": "3 3 0%",
+        "10": "10 10 0%",
       },
       colors: {
         border: "hsl(var(--border))",
