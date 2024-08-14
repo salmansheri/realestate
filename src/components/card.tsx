@@ -26,10 +26,12 @@ export const ListCard = ({ data }: { data: ListCardProps }) => {
       >
         <h2 className="text-lg">{data.title}</h2>
         <p className="text-sm">{data.address}</p>
-        <h1 className="text-2xl font-bold">{formatAmount(data.price)}</h1>
+        <h1 className="text-lg md:text-2xl font-bold">
+          {formatAmount(data.price)}
+        </h1>
         <span className="space-x-1 flex items-center justify-center">
-          <Badge>{`${data.bathroom} Bathrooms`}</Badge>
-          <Badge>{`${data.bedroom} Bedrooms`}</Badge>
+          <Badge className="text-[10px] ">{`${data.bathroom} Bathrooms`}</Badge>
+          <Badge className="text-[10px] ">{`${data.bedroom} Bedrooms`}</Badge>
           <Button size="icon" variant="ghost">
             <Save />
           </Button>
