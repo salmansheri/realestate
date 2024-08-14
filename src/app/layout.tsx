@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { MobileNavigation } from "@/components/mobile-navigation";
+import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 
 const font = Ubuntu({
   subsets: ["latin"],
@@ -23,18 +24,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={font.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="h-screen max-w-[1000px] mx-auto px-[20px] flex flex-col">
-            <Navigation />
-            <MobileNavigation />
-            {children}
-          </main>
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main className="h-screen max-w-[1000px] mx-auto px-[20px] flex flex-col">
+              <Navigation />
+              <MobileNavigation />
+              {children}
+            </main>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

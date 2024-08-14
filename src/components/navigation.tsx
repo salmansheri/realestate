@@ -1,7 +1,8 @@
 import { links } from "@/lib/constants";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
+import { cn } from "@/lib/utils";
 
 export const Navigation = () => {
   return (
@@ -17,8 +18,19 @@ export const Navigation = () => {
         ))}
       </nav>
       <div className="flex gap-3">
-        <Button variant="outline">Sign in</Button>
-        <Button>Sign up</Button>
+        <Link
+          href="/sign-in"
+          className={cn(
+            buttonVariants({
+              variant: "outline",
+            }),
+          )}
+        >
+          Sign in
+        </Link>
+        <Link className={cn(buttonVariants())} href="/sign-up">
+          Sign up
+        </Link>
         <ModeToggle />
       </div>
     </header>
