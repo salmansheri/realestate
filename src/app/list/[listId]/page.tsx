@@ -48,10 +48,6 @@ export default function ListDetailsPage() {
           </div>
         </div>
       </div>
-      {/* right  */}
-      <div className="flex-2">
-        <div className="pr-[20px]"></div>
-      </div>
     </div>
   );
 }
