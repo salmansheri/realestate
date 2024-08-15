@@ -2,7 +2,7 @@ import { AuthForm } from "@/components/form/auth-form";
 
 export default function SignUpPage() {
   return (
-    <div>
+    <div className="">
       <AuthForm type="signUp" />
     </div>
   );

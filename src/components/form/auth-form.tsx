@@ -5,8 +5,17 @@ import { useForm } from "react-hook-form";
 import type { AuthFormType } from "@/lib/validation/auth-schema";
 import { AuthFormSchema } from "@/lib/validation/auth-schema";
 import { Form } from "../ui/form";
+import { CustomFormField, FormFieldType } from "../custom-form-field";
+import { SubmitButton } from "../submit-button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useMutation } from "@tanstack/react-query";
+import { signUp } from "@/lib/actions/users.action";
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<AuthFormType>({
     resolver: zodResolver(AuthFormSchema),
     defaultValues: {
@@ -14,19 +23,98 @@ export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
       password: "",
       avatar: "",
       username: "",
+      phoneNumber: "",
+    },
+  });
+
+  const { mutate: createUser, isPending: isLoading } = useMutation({
+    mutationFn: async (userData: AuthFormType) => {
+      const user = await signUp(userData);
+      return user;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success 👍",
+        description: "Successfully Signed Up...",
+      });
+
+      console.log("success");
+      router.push("/sign-in");
+    },
+
+    onError: (error) => {
+      toast({
+        title: "Error 👎",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
   const onSubmit = (values: AuthFormType) => {
-    console.log(values);
+    if (type === "signIn") {
+      return;
+    }
+
+    if (type === "signUp") {
+      createUser(values);
+    }
   };
+
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CustomFormField />
-        </form>
-      </Form>
-    </div>
+    <Card className="w-full md:w-[40vw] ">
+      <CardHeader>
+        <CardTitle>{type === "signIn" ? "Sign In" : "Sign Up"}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+            <CustomFormField
+              control={form.control}
+              formFieldType={FormFieldType.INPUT}
+              name="email"
+              placeholder="Ex: example@organization.com"
+              label="Email"
+            />
+            <CustomFormField
+              control={form.control}
+              formFieldType={FormFieldType.PASSWORD}
+              name="password"
+              placeholder="Enter your Password"
+              label="Password"
+            />
+
+            {type === "signUp" && (
+              <>
+                <div className="flex items-center gap-3">
+                  <CustomFormField
+                    control={form.control}
+                    formFieldType={FormFieldType.INPUT}
+                    name="username"
+                    placeholder="Your Username"
+                    label="Username"
+                  />
+                  <CustomFormField
+                    control={form.control}
+                    formFieldType={FormFieldType.INPUT}
+                    name="phoneNumber"
+                    placeholder="Ex: 333333333"
+                    label="Phone No"
+                  />
+                </div>
+                <CustomFormField
+                  control={form.control}
+                  formFieldType={FormFieldType.IMAGE}
+                  name="avatar"
+                  placeholder=""
+                  label="Avatar"
+                />
+              </>
+            )}
+            <SubmitButton isLoading={isLoading} />
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };

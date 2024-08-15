@@ -5,6 +5,7 @@ import { Navigation } from "@/components/navigation";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const font = Ubuntu({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
               <MobileNavigation />
               {children}
             </main>
+            <Toaster />
           </ThemeProvider>
         </ReactQueryProvider>
       </body>

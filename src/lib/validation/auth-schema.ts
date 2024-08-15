@@ -12,6 +12,7 @@ export const AuthFormSchema = z.object({
     }),
   avatar: z.string().optional(),
   username: z.string().optional(),
+  phoneNumber: z.string().optional(),
 });
 
 export type AuthFormType = z.infer<typeof AuthFormSchema>;
