@@ -3,8 +3,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { links } from "@/lib/constants";
 import Link from "next/link";
+import { User } from "@prisma/client";
+import { UserProfile } from "./user-profile";
 
-export const Menu = () => {
+export const Menu = ({ user }: { user: User }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -20,14 +22,19 @@ export const Menu = () => {
               {link.label}
             </Link>
           ))}
-          <div className="flex items-center justify-between">
-            <Link href="/sign-in">
-              <LogInIcon />
-            </Link>
-            <Link href="/sign-up">
-              <UserIcon />
-            </Link>
-          </div>
+
+          {user ? (
+            <UserProfile user={user} />
+          ) : (
+            <div className="flex items-center justify-between">
+              <Link href="/sign-in">
+                <LogInIcon />
+              </Link>
+              <Link href="/sign-up">
+                <UserIcon />
+              </Link>
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>

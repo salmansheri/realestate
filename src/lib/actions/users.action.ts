@@ -1,10 +1,8 @@
 "use server";
-import { User } from "@prisma/client";
-import prisma from "../db";
 import bcryptjs from "bcryptjs";
+import prisma from "../db";
 import { AuthFormType } from "../validation/auth-schema";
-import { decrypt, encrypt } from "../utils";
-import { cookies } from "next/headers";
+import { auth } from "../auth";
 
 export async function signUp(userData: AuthFormType) {
   try {
@@ -24,65 +22,35 @@ export async function signUp(userData: AuthFormType) {
   }
 }
 
-export async function signIn({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) {
+export async function getCurrentUser() {
   try {
+    const session = await auth();
+
+    if (!session?.user?.email) {
+      return;
+    }
+
     const user = await prisma.user.findUnique({
       where: {
-        email,
+        email: session?.user?.email,
       },
     });
 
-    if (!user || user?.password) {
-      return null;
+    if (!user) {
+      return;
     }
 
-    const isCorrectPassword = await bcryptjs.compare(password, user.password);
-
-    if (!isCorrectPassword) {
-      return new Error("Invalid Password");
-    }
-
-    const expires = new Date(Date.now() + 10 * 1000);
-
-    const sessionUser = {
+    const currentUser = {
       id: user.id,
       email: user.email,
-      avatar: user.avatar,
       username: user.username,
+      avatar: user.avatar,
+      phoneNumber: user.phoneNumber,
     };
 
-    const session = await encrypt({ sessionUser, expires });
-
-    cookies().set("session", session, {
-      expires,
-      httpOnly: true,
-    });
-  } catch (error) {
-    console.log(`SIGN IN ERROR: ${error}`);
-    return error;
-  }
-}
-
-export async function signOut() {
-  cookies().set("session", "", {
-    expires: new Date(0),
-  });
-}
-
-export async function getSession() {
-  try {
-    const currentSession = cookies().get("session")?.value;
-    if (!currentSession) return null;
-    const currentUser = await decrypt(currentSession);
     return currentUser;
   } catch (error) {
-    console.log(`GET SESSION ERROR: ${error}`);
+    console.log(error);
     return error;
   }
 }

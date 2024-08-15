@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signUp } from "@/lib/actions/users.action";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
   const router = useRouter();
@@ -51,9 +52,17 @@ export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
     },
   });
 
-  const onSubmit = (values: AuthFormType) => {
+  const onSubmit = async (values: AuthFormType) => {
     if (type === "signIn") {
-      return;
+      try {
+        signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: true,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     if (type === "signUp") {
