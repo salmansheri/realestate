@@ -54,3 +54,21 @@ export async function getCurrentUser() {
     return error;
   }
 }
+
+export async function updateUser(userId: string, userData: AuthFormType) {
+  try {
+    const updateUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        ...userData,
+      },
+    });
+
+    return updateUser;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}

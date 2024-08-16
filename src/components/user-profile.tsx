@@ -21,7 +21,7 @@ export const UserProfile = ({ user }: { user: User }) => {
             objectFit="cover"
           />
         ) : (
-          <div className="dark:bg-white bg-black dark:text-black text-white h-10 w-10 flex items-center justify-center font-bold text-3xl">
+          <div className=" bg-rose-600  text-white h-10 w-10 flex items-center justify-center font-bold text-3xl">
             <p>{user?.username?.[0]}</p>
           </div>
         )}

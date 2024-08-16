@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 
 export const MobileNavigation = ({ user }: { user: User }) => {
   return (
-    <header className="flex justify-between md:hidden h-[100px] items-center">
+    <header className="flex justify-between md:hidden h-[100px] items-center p-2">
       <div>
         <Link className="text-xl" href="/">
           Real Estate

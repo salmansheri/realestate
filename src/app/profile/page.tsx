@@ -1,8 +1,10 @@
 import { ListCard } from "@/components/card";
 import { Chat } from "@/components/chat";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { listData, userData } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfilePage() {
   return (
@@ -13,7 +15,10 @@ export default function ProfilePage() {
           {/* title */}
           <div className="flex justify-between">
             <h1 className="text-xl md:text-3xl font-bold">User Information</h1>
-            <Button> Update Profile</Button>
+            <Link className={cn(buttonVariants())} href="/profile/update">
+              {" "}
+              Update Profile
+            </Link>
           </div>
           <div className="flex flex-col gap-6">
             {/* Image  */}

@@ -9,12 +9,18 @@ import { CustomFormField, FormFieldType } from "../custom-form-field";
 import { SubmitButton } from "../submit-button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useMutation } from "@tanstack/react-query";
-import { signUp } from "@/lib/actions/users.action";
+import { signUp, updateUser } from "@/lib/actions/users.action";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
-export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
+export const AuthForm = ({
+  type,
+  userId,
+}: {
+  type: "signIn" | "signUp" | "update";
+  userId?: string;
+}) => {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm<AuthFormType>({
@@ -52,6 +58,26 @@ export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
     },
   });
 
+  const { mutate: onUserUpdate } = useMutation({
+    mutationFn: async (userData: AuthFormType) => {
+      const userUpdate = await updateUser(userId as string, userData);
+      return userUpdate;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "User Profile is Successfully updated ",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const onSubmit = async (values: AuthFormType) => {
     if (type === "signIn") {
       try {
@@ -68,12 +94,20 @@ export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
     if (type === "signUp") {
       createUser(values);
     }
+
+    if (type === "update") {
+      onUserUpdate(values);
+    }
   };
 
   return (
     <Card className="w-full md:w-[40vw] ">
       <CardHeader>
-        <CardTitle>{type === "signIn" ? "Sign In" : "Sign Up"}</CardTitle>
+        <CardTitle>
+          {type === "signIn" && "Sign In"}
+          {type === "signUp" && "Sign Up"}
+          {type === "update" && "Update Profile"}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -93,33 +127,34 @@ export const AuthForm = ({ type }: { type: "signIn" | "signUp" }) => {
               label="Password"
             />
 
-            {type === "signUp" && (
-              <>
-                <div className="flex items-center gap-3">
+            {type === "signUp" ||
+              (type === "update" && (
+                <>
+                  <div className="flex items-center gap-3">
+                    <CustomFormField
+                      control={form.control}
+                      formFieldType={FormFieldType.INPUT}
+                      name="username"
+                      placeholder="Your Username"
+                      label="Username"
+                    />
+                    <CustomFormField
+                      control={form.control}
+                      formFieldType={FormFieldType.INPUT}
+                      name="phoneNumber"
+                      placeholder="Ex: 333333333"
+                      label="Phone No"
+                    />
+                  </div>
                   <CustomFormField
                     control={form.control}
-                    formFieldType={FormFieldType.INPUT}
-                    name="username"
-                    placeholder="Your Username"
-                    label="Username"
+                    formFieldType={FormFieldType.IMAGE}
+                    name="avatar"
+                    placeholder=""
+                    label="Avatar"
                   />
-                  <CustomFormField
-                    control={form.control}
-                    formFieldType={FormFieldType.INPUT}
-                    name="phoneNumber"
-                    placeholder="Ex: 333333333"
-                    label="Phone No"
-                  />
-                </div>
-                <CustomFormField
-                  control={form.control}
-                  formFieldType={FormFieldType.IMAGE}
-                  name="avatar"
-                  placeholder=""
-                  label="Avatar"
-                />
-              </>
-            )}
+                </>
+              ))}
             <SubmitButton isLoading={isLoading} />
           </form>
         </Form>
