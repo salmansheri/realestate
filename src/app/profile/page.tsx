@@ -1,12 +1,21 @@
 import { ListCard } from "@/components/card";
 import { Chat } from "@/components/chat";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/actions/users.action";
 import { listData, userData } from "@/lib/constants";
+import prisma from "@/lib/db";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const currentUser: any = await getCurrentUser();
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: currentUser.id,
+    },
+  });
   return (
     <div className="mt-[100px] py-5 flex flex-col md:flex-row ">
       {/* details  */}
@@ -24,15 +33,15 @@ export default function ProfilePage() {
             {/* Image  */}
             <div className="relative w-20 h-20 overflow-hidden rounded-full">
               <Image
-                src={userData.img}
-                alt={userData.name}
+                src={user?.avatar!}
+                alt={user?.username!}
                 fill
                 className="object-cover"
               />
             </div>
             <span>
-              <p>{userData.name}</p>
-              <p>sheriffsalman00@gmail.com</p>
+              <p>{user?.username}</p>
+              <p>{user?.email}</p>
             </span>
           </div>
           {/* List  */}

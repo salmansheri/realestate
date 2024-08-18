@@ -18,7 +18,7 @@ export const AuthForm = ({
   type,
   userId,
 }: {
-  type: "signIn" | "signUp" | "update";
+  type: "signIn" | "signUp";
   userId?: string;
 }) => {
   const router = useRouter();
@@ -58,26 +58,6 @@ export const AuthForm = ({
     },
   });
 
-  const { mutate: onUserUpdate } = useMutation({
-    mutationFn: async (userData: AuthFormType) => {
-      const userUpdate = await updateUser(userId as string, userData);
-      return userUpdate;
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "User Profile is Successfully updated ",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
   const onSubmit = async (values: AuthFormType) => {
     if (type === "signIn") {
       try {
@@ -94,10 +74,6 @@ export const AuthForm = ({
     if (type === "signUp") {
       createUser(values);
     }
-
-    if (type === "update") {
-      onUserUpdate(values);
-    }
   };
 
   return (
@@ -106,7 +82,6 @@ export const AuthForm = ({
         <CardTitle>
           {type === "signIn" && "Sign In"}
           {type === "signUp" && "Sign Up"}
-          {type === "update" && "Update Profile"}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -127,34 +102,33 @@ export const AuthForm = ({
               label="Password"
             />
 
-            {type === "signUp" ||
-              (type === "update" && (
-                <>
-                  <div className="flex items-center gap-3">
-                    <CustomFormField
-                      control={form.control}
-                      formFieldType={FormFieldType.INPUT}
-                      name="username"
-                      placeholder="Your Username"
-                      label="Username"
-                    />
-                    <CustomFormField
-                      control={form.control}
-                      formFieldType={FormFieldType.INPUT}
-                      name="phoneNumber"
-                      placeholder="Ex: 333333333"
-                      label="Phone No"
-                    />
-                  </div>
+            {type === "signUp" && (
+              <>
+                <div className="flex items-center gap-3">
                   <CustomFormField
                     control={form.control}
-                    formFieldType={FormFieldType.IMAGE}
-                    name="avatar"
-                    placeholder=""
-                    label="Avatar"
+                    formFieldType={FormFieldType.INPUT}
+                    name="username"
+                    placeholder="Your Username"
+                    label="Username"
                   />
-                </>
-              ))}
+                  <CustomFormField
+                    control={form.control}
+                    formFieldType={FormFieldType.INPUT}
+                    name="phoneNumber"
+                    placeholder="Ex: 333333333"
+                    label="Phone No"
+                  />
+                </div>
+                <CustomFormField
+                  control={form.control}
+                  formFieldType={FormFieldType.IMAGE}
+                  name="avatar"
+                  placeholder=""
+                  label="Avatar"
+                />
+              </>
+            )}
             <SubmitButton isLoading={isLoading} />
           </form>
         </Form>

@@ -23,5 +23,59 @@ model User {
   phoneNumber String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  posts Post[]
   
 }
+
+model Post {
+   id String  @id @default(uuid())
+   userId String
+   title String
+   price Int 
+   images String[]
+   address String
+   city String
+   betroom Int 
+   bathroom Int 
+   latitude String
+   longitude String
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+   type Type 
+   property Property
+   user User @relation(fields: [userId], references: [id])
+
+   postDetails PostDetail[]
+
+}
+
+enum Type {
+  buy 
+  rent 
+}
+
+enum Property {
+  apartment
+  house
+  condo
+  land 
+
+}
+
+model PostDetail {
+  id String @id @default(uuid())
+  description String
+  utilities String?
+  pet String?
+  income String?
+  size String?
+  school Int?
+  bus Int?
+  restaurent Int?
+  postId String
+
+  post Post @relation(fields: [postId], references: [id])
+}
+
+

@@ -3,6 +3,7 @@ import bcryptjs from "bcryptjs";
 import prisma from "../db";
 import { AuthFormType } from "../validation/auth-schema";
 import { auth } from "../auth";
+import { UpdateFormType } from "../validation/update-schema";
 
 export async function signUp(userData: AuthFormType) {
   try {
@@ -55,7 +56,7 @@ export async function getCurrentUser() {
   }
 }
 
-export async function updateUser(userId: string, userData: AuthFormType) {
+export async function updateUser(userId: string, userData: UpdateFormType) {
   try {
     const updateUser = await prisma.user.update({
       where: {
