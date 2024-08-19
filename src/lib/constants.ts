@@ -141,3 +141,70 @@ export const userData = {
   name: "John Doe",
   img: "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
 };
+
+export const types = [
+  {
+    id: 1,
+    name: "Buy",
+    value: "buy",
+  },
+  {
+    id: 2,
+    name: "Rent",
+    value: "rent",
+  },
+];
+
+export const properties = [
+  {
+    id: 1,
+    name: "Apartment",
+    value: "apartment",
+  },
+  {
+    id: 2,
+    name: "House",
+    value: "house",
+  },
+  {
+    id: 3,
+    name: "Condo",
+    value: "condo",
+  },
+  {
+    id: 4,
+    name: "Land",
+    value: "land",
+  },
+];
+
+export const utilitiesData = [
+  {
+    id: 1,
+    name: "Owner is responsible",
+    value: "Owner is responsible",
+  },
+  {
+    id: 2,
+    name: "Tenant is responsible",
+    value: "Tenant is responsible",
+  },
+  {
+    id: 3,
+    name: "Shared",
+    value: "Shared",
+  },
+];
+
+export const petPoliciesData = [
+  {
+    id: 1,
+    name: "Allowed",
+    value: "allowed",
+  },
+  {
+    id: 2,
+    name: "Not Allowed",
+    value: "not allowed",
+  },
+];

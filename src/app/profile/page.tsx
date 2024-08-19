@@ -47,7 +47,10 @@ export default async function ProfilePage() {
           {/* List  */}
           <div className="flex justify-between">
             <h1 className="text-xl md:text-3xl font-bold">My Lists</h1>
-            <Button> Add New List</Button>
+            <Link className={buttonVariants()} href="/list/new-post">
+              {" "}
+              Add New List
+            </Link>
           </div>
           <div className="w-full">
             {listData.map((list) => (

@@ -1,20 +1,28 @@
 "use server";
 
-import { Post, User } from "@prisma/client";
+import { Post, PostDetail, User } from "@prisma/client";
 import prisma from "../db";
 import { getCurrentUser } from "./users.action";
 
-export async function createPost(postData: Post, userId: string) {
-  try {
-    const currentUser: any = await getCurrentUser();
+export async function createPost(
+  postData: Post,
 
-    if (!currentUser) {
-      return;
-    }
+  postDetails: PostDetail,
+) {
+  const currentUser: any = await getCurrentUser();
+  if (!currentUser) {
+    return;
+  }
+  try {
     const newPost = await prisma.post.create({
       data: {
         ...postData,
         userId: currentUser?.id,
+        postDetails: {
+          create: {
+            ...postDetails,
+          },
+        },
       },
     });
 

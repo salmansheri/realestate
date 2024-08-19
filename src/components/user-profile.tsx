@@ -34,7 +34,7 @@ export const UserProfile = ({ user }: { user: User }) => {
         </div>
       </div>
       <div>
-        <LogOutIcon className="h-6 w-6" onClick={() => signOut()} />
+        <LogOutIcon className="h-6 w-6" onClick={async () => await signOut()} />
       </div>
     </div>
   );

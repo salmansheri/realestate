@@ -33,10 +33,10 @@ model Post {
    userId String
    title String
    price Int 
-   images String[]
+   images String?
    address String
    city String
-   betroom Int 
+   bedroom Int 
    bathroom Int 
    latitude String
    longitude String

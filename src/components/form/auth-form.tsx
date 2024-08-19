@@ -61,7 +61,7 @@ export const AuthForm = ({
   const onSubmit = async (values: AuthFormType) => {
     if (type === "signIn") {
       try {
-        signIn("credentials", {
+        await signIn("credentials", {
           email: values.email,
           password: values.password,
           redirect: true,

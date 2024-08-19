@@ -6,9 +6,8 @@ import { auth } from "../auth";
 import { UpdateFormType } from "../validation/update-schema";
 
 export async function signUp(userData: AuthFormType) {
+  const hashedPassword = await bcryptjs.hash(userData.password, 10);
   try {
-    const hashedPassword = await bcryptjs.hash(userData.password, 10);
-
     const newUser = await prisma.user.create({
       data: {
         ...userData,
@@ -24,9 +23,8 @@ export async function signUp(userData: AuthFormType) {
 }
 
 export async function getCurrentUser() {
+  const session = await auth();
   try {
-    const session = await auth();
-
     if (!session?.user?.email) {
       return;
     }

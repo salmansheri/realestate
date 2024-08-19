@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
 
 const middleware = auth((req) => {
   if (

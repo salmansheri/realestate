@@ -14,14 +14,24 @@ import {
 import { Input } from "./ui/input";
 import { UploadButton } from "@/lib/uploadthing";
 import FileUpload from "./file-upload";
+import { PostFormType } from "@/lib/validation/post-schema";
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from "./ui/select";
 
 interface CustomFormFieldProps {
-  control: Control<AuthFormType>;
+  control: Control<any>;
   formFieldType: FormFieldType;
   placeholder: string;
   disabled?: boolean;
-  name: FieldPath<AuthFormType>;
+  name: FieldPath<any>;
   label?: string;
+  data?: Array<any>;
 }
 
 export enum FormFieldType {
@@ -30,6 +40,8 @@ export enum FormFieldType {
   TEXTAREA = "TEXTAREA",
   PASSWORD = "password",
   IMAGE = "image",
+  NUMBER = "number",
+  SELECT = "select",
 }
 
 const RenderInput = ({
@@ -82,6 +94,37 @@ const RenderInput = ({
             onChange={field.onChange}
             value={field.value}
           />
+        </FormControl>
+      );
+
+    case FormFieldType.NUMBER:
+      return (
+        <FormControl>
+          <Input placeholder={props.placeholder} {...field} type="number" />
+        </FormControl>
+      );
+
+    case FormFieldType.SELECT:
+      return (
+        <FormControl>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <SelectTrigger>
+              <SelectValue
+                className="w-[50%]"
+                placeholder={props.placeholder}
+              />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+                {props.data?.map((item: any) => (
+                  <SelectItem value={item?.value} key={item?.id}>
+                    {item?.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </FormControl>
       );
     default:
