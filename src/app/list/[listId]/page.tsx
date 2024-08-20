@@ -37,6 +37,9 @@ export default async function ListDetailsPage({
                   <Map />
                   <p>{post?.address}</p>
                 </span>
+                <span>
+                  <p>City: {post?.city}</p>
+                </span>
                 <div>
                   <p className="text-2xl font-bold">
                     {formatAmount(Number(post?.price))}
@@ -59,6 +62,10 @@ export default async function ListDetailsPage({
               <article className="text-justify">
                 {post?.postDetails[0]?.description}
               </article>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">Contact</h2>
+              <p>{post?.user?.phoneNumber}</p>
             </div>
           </div>
         </div>

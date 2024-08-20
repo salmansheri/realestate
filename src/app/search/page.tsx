@@ -1,5 +1,4 @@
 import { ListCard } from "@/components/card";
-import { Filter } from "@/components/filter";
 import { SearchBar } from "@/components/search-bar";
 import prisma from "@/lib/db";
 
