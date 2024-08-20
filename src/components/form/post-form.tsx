@@ -1,6 +1,6 @@
 "use client";
 
-import { createPost } from "@/lib/actions/post.actions";
+import { createPost, updatePost } from "@/lib/actions/post.actions";
 import {
   petPoliciesData,
   properties,
@@ -23,16 +23,22 @@ import {
 } from "../ui/card";
 import { Form } from "../ui/form";
 import { useToast } from "../ui/use-toast";
+import { Post } from "@prisma/client";
 
-export const PostForm = () => {
+export const PostForm = ({
+  type,
+  initialData,
+}: {
+  type: "create" | "update";
+  initialData?: any;
+}) => {
   const router = useRouter();
   const { toast } = useToast();
-  const { mutate, isPending: isLoading } = useMutation({
+
+  // Create Post
+  const { mutate: onCreatePostMutate, isPending: isLoading } = useMutation({
     mutationFn: async (mutationData: any) => {
-      const post = await createPost(
-        mutationData.postData,
-        mutationData.postDetailsData,
-      );
+      const post = await createPost(mutationData);
       return post;
     },
     onSuccess: () => {
@@ -40,8 +46,8 @@ export const PostForm = () => {
         title: "Success",
         description: "Successfully Created the post",
       });
-      router.refresh();
       router.push("/profile");
+      router.refresh();
     },
     onError: (error) => {
       toast({
@@ -51,30 +57,67 @@ export const PostForm = () => {
       });
     },
   });
+
+  console.log(initialData);
+
+  // Form
   const form = useForm<PostFormType>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
-      title: "",
-      price: "",
-      city: "",
-      address: "",
-      bathroom: "",
-      bedroom: "",
-      type: "buy",
-      property: "apartment",
-      latitude: "",
-      longitude: "",
+      title: initialData ? initialData.title : "",
+      price: initialData ? String(initialData.price as string) : "",
+      city: initialData ? initialData.city : "",
+      address: initialData ? initialData.city : "",
+      bathroom: initialData ? String(initialData.bathroom as string) : "",
+      bedroom: initialData ? String(initialData.bedroom as string) : "",
+      type: initialData ? initialData.type : "buy",
+      property: initialData ? initialData.property : "apartment",
+      latitude: initialData ? initialData.latitude : "",
+      longitude: initialData ? initialData.longitude : "",
       images: "",
       postDetails: {
-        description: "",
-        utilities: "",
-        pet: "",
-        income: "",
-        size: "",
-        school: "",
-        bus: "",
-        restaurent: "",
+        description: initialData ? initialData.postDetails[0].description : "",
+        utilities: initialData ? initialData.postDetails[0].utilities : "",
+        pet: initialData ? initialData.postDetails[0].pet : "",
+        income: initialData ? initialData.postDetails[0].income : "",
+        size: initialData ? initialData.postDetails[0].size : "",
+        school: initialData
+          ? String(initialData.postDetails[0].school as string)
+          : "",
+        bus: initialData
+          ? String(initialData.postDetails[0].bus as string)
+          : "",
+        restaurent: initialData
+          ? String(initialData.postDetails[0].restaurent as string)
+          : "",
       },
+    },
+  });
+
+  // Update Post
+  const { mutate: onUpdatePostMutate } = useMutation({
+    mutationFn: async (postData: any) => {
+      const payload = {
+        postId: String(initialData?.id),
+        postData,
+        postDetailId: String(initialData?.postDetails[0]?.id),
+      };
+      return await updatePost(payload);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Successfully Updated the post",
+      });
+      router.push("/profile");
+      router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -92,24 +135,25 @@ export const PostForm = () => {
       longitude: values.longitude,
       type: values.type,
       property: values.property,
+      postDetails: {
+        description: values.postDetails.description,
+        utilities: values.postDetails.utilities,
+        pet: values.postDetails.pet,
+        income: values.postDetails.income,
+        size: values.postDetails.size,
+        school: parseInt(values.postDetails.school),
+        bus: parseInt(values.postDetails.bus),
+        restaurent: parseInt(values.postDetails.restaurent),
+      },
     };
 
-    const postDetailsData = {
-      description: values.postDetails.description,
-      utilities: values.postDetails.utilities,
-      pet: values.postDetails.pet,
-      income: values.postDetails.income,
-      size: values.postDetails.size,
-      school: parseInt(values.postDetails.school),
-      bus: parseInt(values.postDetails.bus),
-      restaurent: parseInt(values.postDetails.restaurent),
-    };
+    if (type === "create") {
+      onCreatePostMutate(postData);
+    }
 
-    const mutationData = {
-      postData,
-      postDetailsData,
-    };
-    mutate(mutationData);
+    if (type === "update") {
+      onUpdatePostMutate(postData);
+    }
   };
   return (
     <Card className="w-full md:xw-[40vw]">

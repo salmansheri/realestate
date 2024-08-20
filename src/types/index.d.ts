@@ -1,7 +1,7 @@
 declare interface ListCardProps {
   id: number;
   title: string;
-  img: string;
+  images: string;
   bedroom: number;
   bathroom: number;
   price: number;
