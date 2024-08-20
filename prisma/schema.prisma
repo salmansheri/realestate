@@ -24,6 +24,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  savedPosts SavedPost[]
+
   posts Post[]
   
 }
@@ -44,9 +46,10 @@ model Post {
    updatedAt DateTime @updatedAt
    type Type 
    property Property
-   user User @relation(fields: [userId], references: [id])
+   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
    postDetails PostDetail[]
+   savedPosts SavedPost[]
 
 }
 
@@ -75,7 +78,21 @@ model PostDetail {
   restaurent Int?
   postId String
 
-  post Post @relation(fields: [postId], references: [id])
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model SavedPost {
+  id String @id @default(uuid())
+  userId String 
+  postId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, postId])
+  
 }
 
 

@@ -9,7 +9,7 @@ import { UserProfile } from "./user-profile";
 
 export const Navigation = ({ user }: { user: User }) => {
   return (
-    <header className=" justify-between h-[100px] items-center hidden md:flex bg-rose-600/10 bg-clip-padding backdrop-filter backdrop-blue-sm fixed left-0 top-0 w-[100%] px-20">
+    <header className=" justify-between h-[100px] items-center hidden md:flex bg-rose-600/10 bg-clip-padding backdrop-filter backdrop-blue-sm fixed left-0 top-0 w-[100%] px-20 z-[56]">
       <nav className="flex gap-6 items-center">
         <Link className="text-xl md:text-3xl" href="/">
           Real Estate
@@ -30,7 +30,7 @@ export const Navigation = ({ user }: { user: User }) => {
               className={cn(
                 buttonVariants({
                   variant: "outline",
-                }),
+                })
               )}
             >
               Sign in

@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { SearchBar } from "./search-bar";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -76,6 +77,16 @@ export const Hero = () => {
               <h2 className="text-2xl font-bold">1200+</h2>
               <p className="">Property Ready</p>
             </div>
+          </div>
+          <div>
+            <Link
+              href="/list"
+              className={buttonVariants({
+                size: "lg",
+              })}
+            >
+              Explore
+            </Link>
           </div>
         </motion.div>
       </div>

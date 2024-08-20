@@ -33,7 +33,7 @@ export const Slider = ({ data }: { data: Array<string> }) => {
     <div className="flex">
       {/* Modal  */}
       {imageIndex !== null && (
-        <div className="absolute w-[100vw] h-[100vh] top-0 left-0 bg-black flex z-50 overflow-y-hidden">
+        <div className="absolute w-[100vw] h-[100vh] top-0 left-0 bg-black flex z-[999] overflow-y-hidden ">
           <div
             className="flex-1 flex flex-col item-center justify-center cursor-pointer px-2"
             onClick={() => onChangeSlides("left")}
@@ -55,7 +55,7 @@ export const Slider = ({ data }: { data: Array<string> }) => {
             <ArrowRight />
           </div>
           <div
-            className="absolute top-0 right-0 p-6 cursor-pointer"
+            className="absolute top-0 right-0 p-6 cursor-pointer z-[999]"
             onClick={() => setImageIndex(null)}
           >
             <X />
