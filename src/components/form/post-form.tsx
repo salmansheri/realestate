@@ -23,7 +23,6 @@ import {
 } from "../ui/card";
 import { Form } from "../ui/form";
 import { useToast } from "../ui/use-toast";
-import { Post } from "@prisma/client";
 
 export const PostForm = ({
   type,

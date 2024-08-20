@@ -1,10 +1,8 @@
 import { ListCard } from "@/components/card";
-import { Chat } from "@/components/chat";
 import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/users.action";
 import prisma from "@/lib/db";
 import { cn } from "@/lib/utils";
-import { Post } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 

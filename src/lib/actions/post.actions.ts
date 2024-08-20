@@ -1,6 +1,5 @@
 "use server";
 
-import { Post, PostDetail, User } from "@prisma/client";
 import prisma from "../db";
 import { getCurrentUser } from "./users.action";
 
