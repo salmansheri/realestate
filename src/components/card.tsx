@@ -24,7 +24,7 @@ export const ListCard = ({
 }: {
   data: Post;
   user?: User;
-  type: "myList" | "savedList";
+  type?: "myList" | "savedList";
   postId?: string;
 }) => {
   console.log(postId);
